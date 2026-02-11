@@ -1,0 +1,37 @@
+{
+  "name": "smush-hydrogen",
+  "version": "1.0.0",
+  "description": "SMUSH. - Premium functional beverage brand on Shopify Hydrogen",
+  "type": "module",
+  "scripts": {
+    "dev": "remix vite:dev",
+    "build": "remix vite:build",
+    "preview": "npm run build",
+    "lint": "eslint --ext .js,.ts,.jsx,.tsx app/"
+  },
+  "author": "SMUSH",
+  "license": "MIT",
+  "dependencies": {
+    "@remix-run/dev": "^2.17.4",
+    "@remix-run/node": "^2.17.4",
+    "@remix-run/react": "^2.17.4",
+    "@remix-run/serve": "^2.17.4",
+    "@shopify/hydrogen": "^2026.1.0",
+    "@shopify/mini-oxygen": "^4.0.0",
+    "@shopify/remix-oxygen": "^3.0.2",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/react": "^19.2.13",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.24",
+    "isbot": "^5.1.21",
+    "postcss": "^8.5.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "vite": "^6.4.1",
+    "vite-tsconfig-paths": "^4.3.2"
+  }
+}

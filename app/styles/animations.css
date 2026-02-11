@@ -1,0 +1,174 @@
+/* Ticker marquee animation */
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.ticker {
+  display: inline-block;
+  animation: marquee 20s linear infinite;
+}
+
+/* Product image hover effect */
+.product-image-container {
+  position: relative;
+  height: 700px;
+  border-radius: 12px;
+  background: var(--cream-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-image-wrapper {
+  width: 80%;
+  height: 80%;
+  border-radius: 12px;
+  background-color: var(--cream-100);
+  box-shadow: 0 50px 100px -20px rgba(107, 93, 79, 0.1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-3deg);
+  transition: transform 0.5s ease;
+}
+
+.product-image-wrapper:hover {
+  transform: rotate(0deg) scale(1.02);
+  transition: transform 0.3s ease;
+}
+
+.product-image-wrapper:hover img {
+  filter: drop-shadow(0 15px 30px rgba(107, 93, 79, 0.2));
+  transform: rotate(0deg) scale(1.15);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.product-image-wrapper img {
+  filter: drop-shadow(0 10px 20px rgba(107, 93, 79, 0.15));
+  border-radius: 12px;
+  transform: rotate(5deg) scale(1.1);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Ingredient card grayscale to color */
+.ingredient-image {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: all 0.3s ease;
+}
+
+.ingredient-card:hover .ingredient-image {
+  filter: grayscale(0%);
+  transform: scale(1.1);
+}
+
+/* Subtle fade-in for sections on scroll */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+/* Staggered entrance for grid children */
+.stagger-in > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-in > *:nth-child(2) { animation-delay: 100ms; }
+.stagger-in > *:nth-child(3) { animation-delay: 200ms; }
+.stagger-in > *:nth-child(4) { animation-delay: 300ms; }
+
+/* Organic drift animations — different axes and speeds */
+@keyframes driftA {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(15px, -20px) scale(1.03); }
+  50% { transform: translate(-10px, -35px) scale(0.97); }
+  75% { transform: translate(20px, -10px) scale(1.02); }
+}
+
+@keyframes driftB {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-20px, 10px) scale(0.96); }
+  50% { transform: translate(15px, 25px) scale(1.04); }
+  75% { transform: translate(-10px, -15px) scale(0.98); }
+}
+
+@keyframes driftC {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(25px, 15px) scale(1.05); }
+  66% { transform: translate(-15px, -20px) scale(0.95); }
+}
+
+@keyframes driftD {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-12px, -25px); }
+  40% { transform: translate(18px, -8px); }
+  60% { transform: translate(-8px, 20px); }
+  80% { transform: translate(15px, 10px); }
+}
+
+/* Glow pulse animations — high floor so circles stay visible */
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes glowPulseSlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes glowPulseFast {
+  0%, 100% { opacity: 0.65; }
+  50% { opacity: 0.95; }
+}
+
+.drift-a { animation: driftA var(--drift-speed, 12s) ease-in-out infinite, glowPulse var(--glow-speed, 8s) ease-in-out infinite; }
+.drift-b { animation: driftB var(--drift-speed, 16s) ease-in-out infinite, glowPulseSlow var(--glow-speed, 10s) ease-in-out infinite; }
+.drift-c { animation: driftC var(--drift-speed, 20s) ease-in-out infinite, glowPulseFast var(--glow-speed, 6s) ease-in-out infinite; }
+.drift-d { animation: driftD var(--drift-speed, 14s) ease-in-out infinite, glowPulse var(--glow-speed, 12s) ease-in-out infinite; }
+
+/* Slow rotation for ring accents */
+@keyframes slowSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.deco-spin {
+  animation: slowSpin 60s linear infinite;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .product-image-container {
+    height: 400px;
+    margin-top: 40px;
+  }
+
+  .deco-ring,
+  .deco-dots,
+  .deco-numeral,
+  .deco-glow,
+  .drift-a,
+  .drift-b,
+  .drift-c,
+  .drift-d {
+    display: none;
+  }
+}

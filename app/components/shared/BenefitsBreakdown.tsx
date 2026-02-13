@@ -1,48 +1,58 @@
 import { Eyebrow } from "./Eyebrow";
 import { DecoCircles } from "./DecoCircles";
+import { useScrollReveal } from '~/hooks/useScrollReveal';
 
 export function BenefitsBreakdown() {
   const benefits = [
     {
       number: "01",
-      title: "Sustained Energy",
-      subtitle: "4-6 hours. No crash.",
+      title: "Sustained Energy Without the Crash",
+      subtitle: "Dual-fuel energy from matcha + MCT.",
       description:
-        "Matcha and MCT create a dual-fuel system — caffeine for alertness, ketones for sustained brain energy — while L-theanine smooths the curve and eliminates jitters. Two energy pathways working in parallel means no spike, no crash, just a clean arc that carries you through your deepest work block.",
+        "Ceremonial matcha (2000mg) delivers 40-60mg of natural caffeine while MCT produces ketones for sustained brain energy. L-theanine smooths the curve — no jitters, no crash, just 4-6 hours of calm alertness. Two energy pathways working in parallel.",
     },
     {
       number: "02",
-      title: "Cognitive Performance",
-      subtitle: "Think sharper under pressure.",
+      title: "Cognitive Focus from Adaptogenic Mushrooms",
+      subtitle: "Five functional mushrooms. One nootropic stack.",
       description:
-        "Five mushrooms working as one system. Neurogenesis support meets cellular ATP production meets stress adaptation meets antioxidant defense. Each mushroom handles a different axis — build, fuel, protect, recover — so your brain operates at full capacity without burning out. A nootropic stack built for sustained demand.",
+        "Lion's mane (1000mg) drives neurogenesis and memory. Cordyceps (1000mg) fuels cellular ATP. Reishi (1000mg) regulates stress response. Chaga (500mg) provides antioxidant defense. Each targets a different cognitive axis — build, fuel, protect, recover.",
     },
     {
       number: "03",
-      title: "Complete Daily Nutrition",
-      subtitle: "One scoop > five bottles.",
+      title: "Complete Daily Nutrition in One Scoop",
+      subtitle: "Your greens powder and multivitamin, replaced.",
       description:
-        "Four supergreens deliver broad-spectrum micronutrients while acerola cherry multiplies iron absorption up to 6x — unlocking the full mineral density of every green in the blend. One scoop covers what used to take five bottles on your countertop. Complete daily nutrition, simplified.",
+        "Spirulina, chlorella, wheatgrass, and moringa (1000mg, 1000mg, 500mg, 500mg) deliver broad-spectrum micronutrients, complete plant protein, and concentrated chlorophyll. Acerola cherry adds natural vitamin C that enhances iron absorption up to 6x. One 10g scoop. Five fewer products.",
     },
   ];
 
+  const header = useScrollReveal();
+  const grid = useScrollReveal({ staggerChildren: true });
+
   return (
-    <section className="section bg-cream-100 relative">
+    <section className="section bg-cream-100 relative" aria-label="Benefits of SMUSH mushroom matcha blend">
       <DecoCircles count={2} />
 
       <div className="container relative z-10">
-        <div className="mb-16">
-          <Eyebrow className="!text-left">Three Pillars</Eyebrow>
+        <div
+          ref={header.ref as React.RefObject<HTMLDivElement>}
+          className="mb-16 scroll-reveal"
+        >
+          <Eyebrow className="!text-left">Why Mushroom Matcha</Eyebrow>
           <h2 className="!text-left mb-6 font-semibold">
-            What Happens After Your First Scoop.
+            What Happens After Your First Scoop
           </h2>
         </div>
 
-        <div className="mx-auto grid md:grid-cols-3 gap-6">
+        <div
+          ref={grid.ref as React.RefObject<HTMLDivElement>}
+          className="mx-auto grid md:grid-cols-3 gap-6 scroll-reveal"
+        >
           {benefits.map((benefit) => (
             <div
               key={benefit.number}
-              className="bg-cream-50 text-balance rounded-2xl bg-[#f6eee588] hover:bg-[#f6eee5] px-10! py-6! hover:drop-shadow-xl hover:top-0.5 transition-all duration-300 gap-2 flex flex-col"
+              className="stagger-child bg-cream-50 text-balance rounded-2xl bg-[#f6eee588] hover:bg-[#f6eee5] px-10! py-6! hover:drop-shadow-xl hover:top-0.5 transition-all! duration-300 gap-2 flex flex-col"
             >
               <div>
                 <span className="text-4xl font-serif text-cream-300 mb-6">

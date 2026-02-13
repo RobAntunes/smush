@@ -3,17 +3,20 @@ export function TickerBanner() {
     'CLINICAL DOSES',
     'ZERO PROPRIETARY BLENDS',
     'VEGAN + NON-GMO',
-    'MADE IN THE EU',
-    '30-DAY GUARANTEE',
-    '€2 PER SERVING',
+    'GMP-CERTIFIED EU MADE',
+    '30-DAY MONEY-BACK GUARANTEE',
+    '\u20AC2 PER SERVING',
     '11 ACTIVE INGREDIENTS',
+    'THIRD-PARTY TESTED',
+    '5 ADAPTOGENIC MUSHROOMS',
+    'CEREMONIAL MATCHA',
   ];
 
   // Triple for seamless loop on wide screens
   const allMessages = [...messages, ...messages, ...messages];
 
   return (
-    <div className="overflow-hidden bg-cream-800 py-8">
+    <div className="overflow-hidden bg-cream-800 py-8" role="marquee" aria-label="SMUSH product highlights">
       <div className="ticker whitespace-nowrap">
         {allMessages.map((message, index) => (
           <span key={index} className="inline-flex items-center mx-8">

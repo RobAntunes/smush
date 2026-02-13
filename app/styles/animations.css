@@ -1,3 +1,8 @@
+/* ── Smooth scroll ── */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Ticker marquee animation */
 @keyframes marquee {
   0% {
@@ -154,8 +159,258 @@
   animation: slowSpin 60s linear infinite;
 }
 
+/* ──────────────────────────────────────────────
+   Scroll Reveal System
+   All sections start hidden, reveal on scroll via
+   [data-revealed="true"] set by useScrollReveal hook.
+   ────────────────────────────────────────────── */
+
+/* Custom ease-out-expo approximation */
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Base reveal: fade + translateY(30px) ── */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal[data-revealed="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Directional reveals ── */
+.scroll-reveal.reveal-left {
+  transform: translateX(-40px);
+}
+.scroll-reveal.reveal-left[data-revealed="true"] {
+  transform: translateX(0);
+}
+
+.scroll-reveal.reveal-right {
+  transform: translateX(40px);
+}
+.scroll-reveal.reveal-right[data-revealed="true"] {
+  transform: translateX(0);
+}
+
+/* ── Scale reveal ── */
+.scroll-reveal.reveal-scale {
+  transform: scale(0.95);
+}
+.scroll-reveal.reveal-scale[data-revealed="true"] {
+  transform: scale(1);
+}
+
+/* ── Fade only ── */
+.scroll-reveal.reveal-fade {
+  transform: none;
+  transition: opacity 0.9s var(--ease-out-expo);
+}
+.scroll-reveal.reveal-fade[data-revealed="true"] {
+  opacity: 1;
+}
+
+/* ── Text reveal: clip-path wipe up ── */
+.scroll-reveal.text-reveal {
+  clip-path: inset(100% 0 0 0);
+  transform: translateY(12px);
+  transition: clip-path 0.8s var(--ease-out-expo), opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+}
+.scroll-reveal.text-reveal[data-revealed="true"] {
+  clip-path: inset(0 0 0 0);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Row reveal: children slide from left, staggered ── */
+.scroll-reveal.row-reveal > * {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.5s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
+  transition-delay: calc(var(--stagger-index, 0) * 100ms);
+}
+.scroll-reveal.row-reveal[data-revealed="true"] > * {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Stagger children: generic delay via CSS var ── */
+.scroll-reveal[data-revealed="true"] > .stagger-child {
+  transition-delay: calc(var(--stagger-index, 0) * 80ms);
+}
+
+/* Stagger children default state */
+.scroll-reveal > .stagger-child {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+  transition-delay: calc(var(--stagger-index, 0) * 80ms);
+}
+
+.scroll-reveal[data-revealed="true"] > .stagger-child {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Hero entrance stagger ── */
+.hero-entrance > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
+}
+
+.hero-entrance[data-entered="true"] > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-entrance > *:nth-child(1) { transition-delay: 0ms; }
+.hero-entrance > *:nth-child(2) { transition-delay: 120ms; }
+.hero-entrance > *:nth-child(3) { transition-delay: 240ms; }
+.hero-entrance > *:nth-child(4) { transition-delay: 360ms; }
+.hero-entrance > *:nth-child(5) { transition-delay: 480ms; }
+
+/* ── Hero image reveal ── */
+.hero-image-reveal {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+  transition-delay: 400ms;
+}
+
+.hero-image-reveal.entered {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Section divider animations ── */
+
+/* Diamond variant: lines scale outward, diamond pops */
+.divider-animated .divider-line-left,
+.divider-animated .divider-line-right {
+  transform: scaleX(0);
+  transition: transform 0.6s var(--ease-out-expo);
+}
+.divider-animated .divider-line-left {
+  transform-origin: right center;
+}
+.divider-animated .divider-line-right {
+  transform-origin: left center;
+}
+.divider-animated .divider-diamond {
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.5s var(--ease-out-expo);
+  transition-delay: 0.2s;
+}
+
+.divider-animated[data-revealed="true"] .divider-line-left,
+.divider-animated[data-revealed="true"] .divider-line-right {
+  transform: scaleX(1);
+}
+.divider-animated[data-revealed="true"] .divider-diamond {
+  transform: rotate(45deg) scale(1);
+}
+
+/* Dots variant: sequential scale-in */
+.divider-animated .divider-dot {
+  transform: scale(0);
+  transition: transform 0.4s var(--ease-out-expo);
+}
+.divider-animated .divider-dot:nth-child(1) { transition-delay: 0ms; }
+.divider-animated .divider-dot:nth-child(2) { transition-delay: 150ms; }
+.divider-animated .divider-dot:nth-child(3) { transition-delay: 300ms; }
+
+.divider-animated[data-revealed="true"] .divider-dot {
+  transform: scale(1);
+}
+
+/* ── Stat counter glow pulse ── */
+@keyframes statGlow {
+  0%, 100% { text-shadow: 0 0 0px transparent; }
+  50% { text-shadow: 0 0 20px rgba(248, 246, 242, 0.3); }
+}
+
+.stat-glow {
+  animation: statGlow 2s ease-in-out 1;
+  animation-delay: 2s;
+}
+
+/* ── Ingredient card radial glow on hover ── */
+.ingredient-card {
+  position: relative;
+  overflow: visible;
+}
+
+.ingredient-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(181,164,144,0.15) 0%, transparent 70%);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ingredient-card:hover::before {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.ingredient-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Context Card — fixed detail panel ── */
+.context-card {
+  transform: translateY(calc(100% + 24px));
+  opacity: 0;
+  transition: transform 0.4s var(--ease-out-expo), opacity 0.3s ease;
+  pointer-events: none;
+}
+.context-card.is-open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.context-card-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.35s var(--ease-out-expo);
+}
+.context-card-body.is-collapsed {
+  grid-template-rows: 0fr;
+}
+.context-card-body > div {
+  overflow: hidden;
+}
+
+/* Corner frame overrides for context card */
+.context-card.corner-frame::before {
+  border-top-color: var(--cream-500);
+  border-left-color: var(--cream-500);
+}
+.context-card.corner-frame::after {
+  border-bottom-color: var(--cream-500);
+  border-right-color: var(--cream-500);
+}
+
 /* Mobile adjustments */
 @media (max-width: 768px) {
+  .context-card {
+    left: 1rem !important;
+    right: 1rem !important;
+    bottom: 1rem !important;
+    width: auto !important;
+  }
+
   .product-image-container {
     height: 400px;
     margin-top: 40px;
@@ -170,5 +425,69 @@
   .drift-c,
   .drift-d {
     display: none;
+  }
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .scroll-reveal,
+  .scroll-reveal.reveal-left,
+  .scroll-reveal.reveal-right,
+  .scroll-reveal.reveal-scale,
+  .scroll-reveal.reveal-fade,
+  .scroll-reveal.text-reveal {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+
+  .scroll-reveal > .stagger-child,
+  .scroll-reveal.row-reveal > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-entrance > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-image-reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .divider-animated .divider-line-left,
+  .divider-animated .divider-line-right {
+    transform: scaleX(1);
+  }
+
+  .divider-animated .divider-diamond {
+    transform: rotate(45deg) scale(1);
+  }
+
+  .divider-animated .divider-dot {
+    transform: scale(1);
+  }
+
+  .context-card {
+    transform: none;
+    opacity: 0;
+  }
+  .context-card.is-open {
+    opacity: 1;
   }
 }

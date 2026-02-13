@@ -1,5 +1,5 @@
 import { Link } from '@remix-run/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface HeaderProps {
   cartCount?: number;
@@ -8,10 +8,22 @@ interface HeaderProps {
 
 export function Header({ cartCount = 0, onCartClick }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 100);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <nav className="fixed top-0 w-full bg-cream-100/90 backdrop-blur-md z-50 border-b border-cream-300">
-      <div className="container flex justify-between items-center py-8">
+    <nav
+      className={`fixed top-0 w-full bg-cream-100/90 backdrop-blur-md z-50 border-b border-cream-300 transition-all duration-300${scrolled ? ' header-scrolled' : ''}`}
+    >
+      <div className="container flex justify-between items-center py-8 transition-all duration-300">
         {/* Logo */}
         <Link to="/" className="text-3xl font-serif font-bold tracking-tight">
           SMUSH.

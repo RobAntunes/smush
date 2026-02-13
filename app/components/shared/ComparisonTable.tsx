@@ -1,26 +1,33 @@
 import { Eyebrow } from './Eyebrow';
 import { Button } from './Button';
+import { useScrollReveal } from '~/hooks/useScrollReveal';
 
 export function ComparisonTable() {
   const replacements = [
-    { product: 'Morning Coffee', replaced: 'Matcha + MCT dual-fuel energy', savings: '~€3/day' },
-    { product: 'Greens Powder', replaced: 'Spirulina, chlorella, wheatgrass, moringa', savings: '~€2/day' },
-    { product: 'Nootropic Stack', replaced: 'Five adaptogenic mushrooms at clinical doses', savings: '~€2/day' },
-    { product: 'Multivitamin', replaced: 'Acerola cherry + broad-spectrum micronutrients', savings: '~€1/day' },
-    { product: 'Focus Supplement', replaced: 'L-theanine + caffeine synergy from matcha', savings: '~€1.50/day' },
+    { product: 'Morning Coffee', replaced: '2000mg ceremonial matcha + 1300mg MCT — dual-fuel energy', savings: '~\u20AC3/day' },
+    { product: 'Greens Powder', replaced: '1000mg spirulina, 1000mg chlorella, 500mg wheatgrass, 500mg moringa', savings: '~\u20AC2/day' },
+    { product: 'Nootropic Stack', replaced: '1000mg lion\'s mane, 1000mg cordyceps, 1000mg reishi, 500mg chaga', savings: '~\u20AC2/day' },
+    { product: 'Multivitamin', replaced: '200mg acerola cherry vitamin C + broad-spectrum supergreen micronutrients', savings: '~\u20AC1/day' },
+    { product: 'Focus Supplement', replaced: 'L-theanine + caffeine synergy from 2000mg ceremonial matcha', savings: '~\u20AC1.50/day' },
   ];
 
-  return (
-    <section className="section relative">
-      {/* Circles bleed in from adjacent sections */}
+  const header = useScrollReveal();
+  const tbody = useScrollReveal({ staggerChildren: true });
+  const cta = useScrollReveal();
 
+  return (
+    <section className="section relative" aria-label="What SMUSH replaces — supplement comparison">
       <div className="container max-w-5xl relative z-10">
-        <div className="text-center mb-16 max-w-3xl mx-auto">
-          <Eyebrow className="justify-center">One Scoop</Eyebrow>
-          <h2>Replace Five Products With One.</h2>
-          <p className="text-cream-600 mt-4 font-thin">
-            SMUSH consolidates your entire morning stack into a single 10g serving.
-            Every ingredient at clinical doses. Every milligram disclosed. €2 per day.
+        <div
+          ref={header.ref as React.RefObject<HTMLDivElement>}
+          className="text-center mb-16 max-w-3xl mx-auto scroll-reveal"
+        >
+          <Eyebrow className="justify-center">Best Coffee Alternative</Eyebrow>
+          <h2>Replace Five Products With One Mushroom Matcha Blend</h2>
+          <p className="text-cream-600 mt-4 font-thin text-left">
+            SMUSH consolidates your entire morning supplement stack into a single 10g serving.
+            Adaptogenic mushrooms, ceremonial matcha, supergreens, and MCT — every ingredient
+            at clinical doses, every milligram disclosed. All for {'\u20AC'}2 per day.
           </p>
         </div>
 
@@ -34,7 +41,10 @@ export function ComparisonTable() {
                 <th className="text-right py-5 font-sans uppercase tracking-wider text-xs text-cream-500 w-1/5">You Save</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody
+              ref={tbody.ref as React.RefObject<HTMLTableSectionElement>}
+              className="scroll-reveal row-reveal"
+            >
               {replacements.map((row) => (
                 <tr key={row.product} className="border-b border-cream-300">
                   <td className="py-6 text-base text-cream-500 font-thin">{row.product}</td>
@@ -46,9 +56,12 @@ export function ComparisonTable() {
           </table>
         </div>
 
-        <div className="text-center mt-14 flex justify-start flex-col">
-          <Button className='w-[20%]' href="/collections/all">Try The Pouch — €60</Button>
-          <p className="text-xs text-cream-500 mt-4 font-thin">30-day supply. Free shipping over €120. 30-day guarantee.</p>
+        <div
+          ref={cta.ref as React.RefObject<HTMLDivElement>}
+          className="text-center mt-14 flex justify-start flex-col scroll-reveal"
+        >
+          <Button className='w-[20%]' href="/collections/all">Try The Pouch — {'\u20AC'}60</Button>
+          <p className="text-xs text-cream-500 mt-4 font-thin">30-day supply. Free EU shipping from {'\u20AC'}120. 30-day money-back guarantee.</p>
         </div>
       </div>
     </section>

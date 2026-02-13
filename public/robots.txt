@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /cart
+Disallow: /account
+Disallow: /api/
+
+Sitemap: https://smush.eu/sitemap.xml

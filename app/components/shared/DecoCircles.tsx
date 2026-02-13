@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParallax } from '~/hooks/useParallax';
 
 interface Circle {
   size: number;
@@ -20,6 +21,8 @@ interface DecoCirclesProps {
   count?: number;
   /** Use dark palette (for cream-800 bg sections) */
   dark?: boolean;
+  /** Parallax speed multiplier (0 = disabled) */
+  parallaxSpeed?: number;
 }
 
 function rand(min: number, max: number) {
@@ -94,8 +97,9 @@ function generateCircle(dark: boolean): Circle {
   };
 }
 
-export function DecoCircles({ count = 2, dark = false }: DecoCirclesProps) {
+export function DecoCircles({ count = 2, dark = false, parallaxSpeed = 0 }: DecoCirclesProps) {
   const [circles, setCircles] = useState<Circle[]>([]);
+  const parallax = useParallax({ speed: parallaxSpeed });
 
   useEffect(() => {
     setCircles(Array.from({ length: count }, () => generateCircle(dark)));
@@ -103,29 +107,37 @@ export function DecoCircles({ count = 2, dark = false }: DecoCirclesProps) {
 
   if (circles.length === 0) return null;
 
-  return (
-    <>
-      {circles.map((c, i) => (
-        <div
-          key={i}
-          className={c.drift}
-          style={{
-            position: 'absolute',
-            width: c.size,
-            height: c.size,
-            [c.side]: c.x,
-            [c.vSide]: c.y,
-            borderRadius: '50%',
-            background: c.fill,
-            border: `2px solid ${c.borderColor}`,
-            boxShadow: `0 0 ${c.glowSize}px ${c.glowSize}px ${c.glowColor}`,
-            pointerEvents: 'none' as const,
-            zIndex: 0,
-            ['--drift-speed' as string]: c.driftSpeed,
-            ['--glow-speed' as string]: c.glowSpeed,
-          }}
-        />
-      ))}
-    </>
-  );
+  const Wrapper = parallaxSpeed > 0 ? 'div' : 'span';
+
+  const content = circles.map((c, i) => (
+    <div
+      key={i}
+      className={c.drift}
+      style={{
+        position: 'absolute',
+        width: c.size,
+        height: c.size,
+        [c.side]: c.x,
+        [c.vSide]: c.y,
+        borderRadius: '50%',
+        background: c.fill,
+        border: `2px solid ${c.borderColor}`,
+        boxShadow: `0 0 ${c.glowSize}px ${c.glowSize}px ${c.glowColor}`,
+        pointerEvents: 'none' as const,
+        zIndex: 0,
+        ['--drift-speed' as string]: c.driftSpeed,
+        ['--glow-speed' as string]: c.glowSpeed,
+      }}
+    />
+  ));
+
+  if (parallaxSpeed > 0) {
+    return (
+      <div ref={parallax.ref as React.RefObject<HTMLDivElement>} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        {content}
+      </div>
+    );
+  }
+
+  return <>{content}</>;
 }
